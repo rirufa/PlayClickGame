@@ -1,0 +1,26 @@
+﻿<Page
+    x:Class="PanelClickGame.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PanelClickGame"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="MyView"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Margin="0,0,20,0">
+            <TextBlock Text="経過秒数" FontSize="20" Margin="0,0,0,10"></TextBlock>
+            <TextBlock Text="{Binding ElapsedSecnod}" FontSize="20" Margin="0,0,0,10"></TextBlock>
+            <Button Content="Reset" Command="{Binding ResetCommand}" Margin="0,0,0,10"></Button>
+        </StackPanel>
+        <GridView ItemsSource="{Binding NumberList}" MaxHeight="500">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Label}" Command="{Binding ClickCommand}" Height="100" Width="100"></Button>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+    </StackPanel>
+</Page>
