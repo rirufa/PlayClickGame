@@ -7,6 +7,7 @@ namespace PanelClickGame
 {
     class Model
     {
+        const int StartNumber = 1;
         int MaxNumber;
         int CurrentNumber;
         long GameStartTick,GameEndTick;
@@ -21,11 +22,11 @@ namespace PanelClickGame
         {
             get
             {
-                if (this.CurrentNumber == 0)
+                if (this.CurrentNumber == StartNumber) //inital state
                     return 0;
                 else if (this.CurrentNumber < this.MaxNumber)
                     return DateTime.Now.Ticks - this.GameStartTick;
-                else
+                else //game set
                     return this.GameEndTick - this.GameStartTick;
             }
         }
@@ -44,9 +45,17 @@ namespace PanelClickGame
 
         public bool Click(int number)
         {
-            if (number ==  this.CurrentNumber + 1)
+            if (number == StartNumber)
+            {
+                //click first number is game start.
+                this.ResetTick();
+                return true;
+            }
+            //is number next?
+            else if (number ==  this.CurrentNumber + 1)
             {
                 this.CurrentNumber = number;
+                //is number end?
                 if(this.CurrentNumber == this.MaxNumber)
                     this.GameEndTick = DateTime.Now.Ticks;
                 return true;
@@ -59,7 +68,11 @@ namespace PanelClickGame
 
         public void Reset()
         {
-            this.CurrentNumber = 0;
+            this.CurrentNumber = StartNumber;
+        }
+
+        private void ResetTick()
+        {
             this.GameEndTick = DateTime.Now.Ticks;
             this.GameStartTick = DateTime.Now.Ticks;
         }
