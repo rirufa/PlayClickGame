@@ -12,12 +12,19 @@ namespace PanelClickGame
         int CurrentNumber;
         long GameStartTick,GameEndTick;
 
+        /// <summary>
+        /// initalize
+        /// </summary>
+        /// <param name="max">end number</param>
         public Model(int max)
         {
             this.MaxNumber = max;
             this.Reset();
         }
 
+        /// <summary>
+        /// the elapsed tick since game start.the tick is stopped when game end.
+        /// </summary>
         public long ElapsedTick
         {
             get
@@ -31,6 +38,10 @@ namespace PanelClickGame
             }
         }
 
+        /// <summary>
+        /// get randminzed number list.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<int> NumberList()
         {
             List<int> numbers = Enumerable.Range(1, this.MaxNumber).ToList();
@@ -43,6 +54,13 @@ namespace PanelClickGame
             }
         }
 
+        /// <summary>
+        /// when click first number,start the game.
+        /// when click last number,end the game.
+        /// else validate the clicked number.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns>return true when number is next number.else false.</returns>
         public bool Click(int number)
         {
             if (number == StartNumber)
@@ -66,6 +84,9 @@ namespace PanelClickGame
             }
         }
 
+        /// <summary>
+        /// restart game
+        /// </summary>
         public void Reset()
         {
             this.CurrentNumber = StartNumber;
