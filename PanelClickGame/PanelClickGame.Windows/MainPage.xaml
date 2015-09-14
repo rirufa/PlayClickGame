@@ -8,14 +8,18 @@
     mc:Ignorable="d"
     x:Name="MyView"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Page.Resources>
+        <local:GridSizeConverter x:Key="GridConverter"/>
+    </Page.Resources>
+    
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical" Margin="0,0,20,0">
             <TextBlock Text="経過秒数" FontSize="20" Margin="0,0,0,10"></TextBlock>
             <TextBlock Text="{Binding ElapsedSecnod}" FontSize="20" Margin="0,0,0,10"></TextBlock>
             <Button Content="Reset" Command="{Binding ResetCommand}" Margin="0,0,0,10"></Button>
         </StackPanel>
-        <GridView ItemsSource="{Binding NumberList}" MaxHeight="500">
+        <!-- GridViewのアイテムごとの余白は20程度あるので、その値を足す -->
+        <GridView ItemsSource="{Binding NumberList}" MaxHeight="{Binding GridHeight, Converter={StaticResource GridConverter}, ConverterParameter=120}">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Button Content="{Binding Label}" Command="{Binding ClickCommand}" Height="100" Width="100"></Button>

@@ -17,4 +17,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Model.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\ja-jp\Resources.resw" />
+  </ItemGroup>
 </Project>

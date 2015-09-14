@@ -15,6 +15,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Popups;
+#if WINDOWS_APP
+using Windows.UI.ApplicationSettings;
+#endif
 
 // 空のアプリケーション テンプレートについては、http://go.microsoft.com/fwlink/?LinkId=234227 を参照してください
 
@@ -25,6 +29,7 @@ namespace PanelClickGame
     /// </summary>
     public sealed partial class App : Application
     {
+        bool SettingRegistored;
 #if WINDOWS_PHONE_APP
         private TransitionCollection transitions;
 #endif
@@ -101,6 +106,14 @@ namespace PanelClickGame
                 }
             }
 
+#if WINDOWS_APP
+            if (!this.SettingRegistored)
+            {
+                SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
+                this.SettingRegistored = true;
+            }
+#endif
+
             // 現在のウィンドウがアクティブであることを確認します
             Window.Current.Activate();
         }
@@ -116,6 +129,30 @@ namespace PanelClickGame
             var rootFrame = sender as Frame;
             rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
             rootFrame.Navigated -= this.RootFrame_FirstNavigated;
+        }
+#endif
+
+#if WINDOWS_APP
+        void OnCommandsRequested(SettingsPane settingsPane, SettingsPaneCommandsRequestedEventArgs eventArgs)
+        {
+            var handler = new UICommandInvokedHandler(OnSettingsCommand);
+
+            var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+
+            eventArgs.Request.ApplicationCommands.Add(new SettingsCommand("setting", loader.GetString("SettingCommandTitle"), handler));
+        }
+
+        private void OnSettingsCommand(IUICommand command)
+        {
+            var settingsCommand = (SettingsCommand)command;
+            Windows.UI.Xaml.Controls.SettingsFlyout flyout = null;
+            switch (settingsCommand.Id.ToString())
+            {
+                case "setting":
+                    flyout = new AppSettingsFlyout();
+                    flyout.Show();
+                    break;
+            }
         }
 #endif
 

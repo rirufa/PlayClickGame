@@ -16,9 +16,9 @@ namespace PanelClickGame
         /// initalize
         /// </summary>
         /// <param name="max">end number</param>
-        public Model(int max)
+        public Model(int width,int height)
         {
-            this.MaxNumber = max;
+            this.MaxNumber = width * height;
             this.Reset();
         }
 

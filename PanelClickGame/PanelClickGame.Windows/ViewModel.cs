@@ -25,20 +25,63 @@ namespace PanelClickGame
         }
     }
 
+    class SettingViewModel : ViewModel
+    {
+        public SettingViewModel() :base()
+        {
+        }
+
+        public int GridWidth
+        {
+            get
+            {
+                return AppSetting.Current.GridWidth;
+            }
+            set
+            {
+                if (value < 2)
+                    throw new ArgumentOutOfRangeException("２以上の値を指定する必要があります");
+                AppSetting.Current.GridWidth = value;
+                this.OnProperyChanged();
+            }
+        }
+
+    }
+
     class ViewModel : ViewModelBase
     {
-        Model model = new Model(16);
+        Model model = new Model(AppSetting.Current.GridWidth,AppSetting.Current.GridHeight);
         DispatcherTimer timer = new DispatcherTimer();
 
         public ViewModel() : base()
         {
             this.OnProperyChanged("NumberList");
+
+            AppSetting.Current.SettingChanged += Current_SettingChanged;
+
             this.timer.Interval = new TimeSpan(0, 0, 0, 0, 32);
             this.timer.Tick += (s, e) =>
             {
                 this.OnProperyChanged("ElapsedSecnod");
             };
+
             this.timer.Start();
+        }
+
+        private void Current_SettingChanged(object sender, EventArgs e)
+        {
+            this.model = new Model(AppSetting.Current.GridWidth, AppSetting.Current.GridHeight);
+            this.OnProperyChanged("NumberList");
+            this.OnProperyChanged("ElapsedSecnod");
+            this.OnProperyChanged("GridHeight");
+        }
+
+        public int GridHeight
+        {
+            get
+            {
+                return AppSetting.Current.GridHeight;
+            }
         }
 
         public double ElapsedSecnod
